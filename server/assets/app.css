@@ -1,0 +1,12 @@
+.rotate-90 {
+  transform:rotate(90deg);
+}
+
+.right-gap {
+  margin-right: 1rem;
+}
+
+/* smooth progress bar only compatible for webkit */
+progress::-webkit-progress-value {
+  transition: all 0.5s ease;
+}

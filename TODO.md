@@ -1,0 +1,2 @@
+- [ ] Smooth progressbar (Firefox, etc.)
+- [ ] Properly close ws

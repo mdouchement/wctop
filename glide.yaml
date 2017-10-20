@@ -1,0 +1,27 @@
+package: github.com/mdouchement/wctop
+import:
+- package: github.com/bmizerany/pat
+- package: github.com/fsouza/go-dockerclient
+- package: github.com/docker/docker
+  version: 77c9728847358a3ed3581d828fb0753017e1afd3 # Compatible registry for go-dockerclient
+  subpackages:
+  - client
+  - api/types
+  - api/types/registry
+- package: github.com/gorilla/websocket
+- package: github.com/pkg/errors
+- package: github.com/satori/go.uuid
+- package: github.com/shirou/gopsutil
+  subpackages:
+  - cpu
+  - mem
+- package: github.com/spf13/cobra
+- package: github.com/tdewolff/minify
+  subpackages:
+  - css
+  - html
+  - js
+  - json
+  - svg
+  - xml
+- package: github.com/ulule/deepcopier
