@@ -56,7 +56,7 @@ func Start() {
 }
 
 func Stop() {
-	time.Sleep(1 * time.Second) // TODO until 1 minute of idle
+	time.Sleep(1 * time.Minute) // until 1 minute of idle
 
 	mu.Lock()
 	defer mu.Unlock()
