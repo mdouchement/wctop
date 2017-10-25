@@ -1,6 +1,8 @@
 # wctop
 
-wctop is simple web-ui for monitoring local running Docker containers like the CLI tool [ctop](http://ctop.sh).
+wctop is simple **web-ui** for monitoring local running Docker containers like the CLI tool [ctop](http://ctop.sh).
+
+![wctop](https://user-images.githubusercontent.com/6150317/32009007-142b7d60-b9ae-11e7-827f-d7d3f04e8c1e.jpeg)
 
 ## Installation
 
