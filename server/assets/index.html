@@ -13,8 +13,8 @@
   <body class="is-fullheight page-layout">
     <div id="app">
       <main>
-        <section class="section container">
-          <div class=" columns">
+        <section class="section container is-full-width">
+          <div class="columns is-centered">
             <!-- OS -->
             <div class="column is-three-quarters">
               <label class="label">CPU Usage {{ os_stats['cpu_usage_percent'] | round }}&#37;
@@ -36,7 +36,7 @@
         <section class="section container">
           <label>Running Containers</label>
           <hr>
-          <div class="tile is-ancestor">
+          <div class="columns is-multiline">
             <x-container v-for="stats in containers_stats" v-bind:stats="stats"></x-container>
           </div>
         </section>
