@@ -10,6 +10,12 @@ wctop is simple **web-ui** for monitoring local running Docker containers like t
 docker run -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -d mdouchement/wctop
 ```
 
+## Technologies
+
+- [Golang](https://golang.org/)
+- [Vue.js](https://vuejs.org/)
+- [Bulma](https://bulma.io/)
+
 ## Development
 
 - Golang 1.8 or greater
