@@ -40,22 +40,19 @@ func echo(conn *websocket.Conn) {
 	fmt.Printf("Remote %s has subscribed\n", conn.RemoteAddr())
 
 	id, notifCh := async.WsNotifier.Subscribe()
-	for {
-		select {
-		case notif := <-notifCh:
-			err := conn.WriteJSON(notif)
-			if err != nil {
-				fmt.Println(errors.Wrap(err, "ws serialization"))
-				async.WsNotifier.UnSubscribe(id)
-				fmt.Printf("Unsubscribe remote %s\n", conn.RemoteAddr())
-				async.Stop() // Stop if no longer subscribers
+	for notif := range notifCh {
+		err := conn.WriteJSON(notif)
+		if err != nil {
+			fmt.Println(errors.Wrap(err, "ws serialization"))
+			async.WsNotifier.UnSubscribe(id)
+			fmt.Printf("Unsubscribe remote %s\n", conn.RemoteAddr())
+			async.Stop() // Stop if no longer subscribers
 
-				err = conn.Close()
-				if err = errors.Wrap(err, "ws closing"); err != nil {
-					fmt.Println(err)
-				}
-				return
+			err = conn.Close()
+			if err = errors.Wrap(err, "ws closing"); err != nil {
+				fmt.Println(err)
 			}
+			return
 		}
 	}
 }

@@ -23,14 +23,10 @@ type (
 const interval = 1 * time.Second
 
 var (
-	mu   sync.Mutex
-	done chan bool
-	conn = container.NewDocker()
+	mu     sync.Mutex
+	ticker *time.Ticker
+	conn   = container.NewDocker()
 )
-
-func init() {
-	done = make(chan bool)
-}
 
 func Start() {
 	mu.Lock()
@@ -39,18 +35,12 @@ func Start() {
 	if WsNotifier.Len() > 0 {
 		return
 	}
+	ticker = time.NewTicker(interval)
 
 	go func() {
-		ticker := time.NewTicker(interval)
-
 		fetch()
-		for {
-			select {
-			case <-done:
-				return
-			case <-ticker.C:
-				fetch()
-			}
+		for _ = range ticker.C {
+			fetch()
 		}
 	}()
 }
@@ -68,7 +58,7 @@ func Stop() {
 
 	fmt.Println("Idle: No longer subscribers")
 
-	done <- true
+	ticker.Stop()
 	conn.Reset()
 }
 
