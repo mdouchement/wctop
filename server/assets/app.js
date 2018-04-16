@@ -8,7 +8,11 @@ var app = new Vue({
     moment.locale('en');
 
     // Websocket connection
-    var socket = new WebSocket("ws://"+location.host+"/ws");
+    var scheme = "ws";
+    if (location.protocol == "https:") {
+      scheme = "wss";
+    }
+    var socket = new WebSocket(scheme+"://"+location.host+"/ws");
     socket.onopen = function() {
         console.log("Socket is open");
     };
