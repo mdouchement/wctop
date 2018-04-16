@@ -24,7 +24,8 @@ func homeHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func wsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Origin") != "http://"+r.Host {
+	if r.Header.Get("Origin") != fmt.Sprintf("http://%s", r.Host) &&
+		r.Header.Get("Origin") != fmt.Sprintf("https://%s", r.Host) {
 		http.Error(w, "Origin not allowed", 403)
 		return
 	}
