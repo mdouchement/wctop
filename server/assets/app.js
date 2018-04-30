@@ -26,7 +26,6 @@ var app = new Vue({
 
       if ( self.totalMemory === -1 && data['os_stats'] !== {} ) {
         self.totalMemory = data['os_stats']['mem']['total'];
-        self.$refs['mem-progressbar'].max = self.totalMemory;
       }
     };
     socket.onclose = function () {

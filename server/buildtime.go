@@ -13,7 +13,7 @@ import (
 	"github.com/tdewolff/minify"
 )
 
-const buildtime = "1510333429"
+const buildtime = "1525102992"
 
 var (
 	faviconRegexp = regexp.MustCompile(`<link href="([^"]*)" rel="icon">`)
