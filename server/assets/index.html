@@ -18,10 +18,10 @@
             <!-- OS -->
             <div class="column is-three-quarters">
               <label class="label">CPU Usage {{ os_stats['cpu_usage_percent'] | round }}&#37;
-                <progress class="progress is-info" v-bind:value="os_stats['cpu_usage_percent']" max="100">{{ os_stats['cpu_usage_percent'] | round }}&#37;</progress>
+                <vue-simple-progress bar-color="#209CEE" bg-color="#DBDBDB" size="big" v-bind:val="os_stats['cpu_usage_percent']"></vue-simple-progress>
               </label>
               <label class="label">RAM Usage: {{ memUsage | bytesHumanize }} / {{ totalMemory | bytesHumanize }}
-                <progress ref="mem-progressbar" class="progress is-primary" v-bind:value="memUsage" max="0">{{ memUsage }}</progress>
+                <vue-simple-progress bar-color="#00D1B2" bg-color="#DBDBDB" size="big" v-bind:val="memUsage" v-bind:max="totalMemory"></vue-simple-progress>
               </label>
             </div>
 
@@ -46,6 +46,7 @@
 
       <footer class="row clearfix">
         <script src="assets/vue.min.js"></script>
+        <script src="assets/vue-simple-progress.min.js"></script>
         <script src="assets/moment-with-locales.min.js"></script>
         <script src="assets/helpers.js"></script>
         <script src="assets/container-component.js"></script>

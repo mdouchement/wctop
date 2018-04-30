@@ -12,10 +12,10 @@ Vue.component('x-container', {
       </div>
       <div class="tile is-child">
         <p>CPU {{ stats['cpu_usage'] }}&#37;
-          <progress class="progress is-info" v-bind:value="stats['cpu_usage']" max="100">{{ stats['cpu_usage'] }}&#37;</progress>
+          <vue-simple-progress bar-color="#209CEE" bg-color="#DBDBDB" size="big" v-bind:val="stats['cpu_usage']"></vue-simple-progress>
         </p>
         <p>RAM {{ stats['mem_usage'] | bytesHumanize }} / {{ stats['mem_limit'] | bytesHumanize }}
-          <progress class="progress is-primary" v-bind:value="stats['mem_percent'] +1 " max="100">{{ stats['mem_percent'] }}&#37;</progress>
+          <vue-simple-progress bar-color="#00D1B2" bg-color="#DBDBDB" size="big" v-bind:val="stats['mem_percent'] +1"></vue-simple-progress>
         </p>
       </div>
     </article>
