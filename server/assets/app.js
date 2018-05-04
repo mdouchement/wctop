@@ -42,6 +42,14 @@ var app = new Vue({
       "mem": {
         "total": -1,
         "available": -1
+      },
+      "net": {
+        "tx": -1,
+        "rx": -1
+      },
+      "io": {
+        "bytes_read": -1,
+        "bytes_write": -1
       }
     },
     containers_stats: []

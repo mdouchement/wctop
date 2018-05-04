@@ -7,7 +7,9 @@ import (
 
 	"github.com/mdouchement/wctop/container"
 	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
+	"github.com/shirou/gopsutil/net"
 )
 
 type (
@@ -15,6 +17,8 @@ type (
 	OsStat struct {
 		CPUUsagePercent float32 `json:"cpu_usage_percent"`
 		Mem             M       `json:"mem"`
+		Net             M       `json:"net"`
+		IO              M       `json:"io"`
 	}
 
 	ContainerStat = container.Container
@@ -91,11 +95,34 @@ func top() (*OsStat, error) {
 		return nil, err
 	}
 
+	nio, err := net.IOCounters(false)
+	if err != nil {
+		return nil, err
+	}
+
+	dio, err := disk.IOCounters()
+	if err != nil {
+		return nil, err
+	}
+	var readBytes, writeBytes uint64
+	for _, v := range dio {
+		readBytes += v.ReadBytes
+		writeBytes += v.WriteBytes
+	}
+
 	return &OsStat{
 		CPUUsagePercent: float32(percs[0]),
 		Mem: M{
 			"total":     vms.Total,
 			"available": vms.Available,
+		},
+		Net: M{
+			"tx": nio[0].BytesSent,
+			"rx": nio[0].BytesRecv,
+		},
+		IO: M{
+			"bytes_read":  readBytes,
+			"bytes_write": writeBytes,
 		},
 	}, nil
 }

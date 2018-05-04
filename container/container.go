@@ -11,21 +11,25 @@ import (
 )
 
 type Container struct {
-	mu         sync.Mutex `deepcopier:"skip"`
-	done       chan bool  `deepcopier:"skip"`
-	running    bool       `deepcopier:"skip"`
-	conn       *Connector `deepcopier:"skip"`
-	lastCpu    float64    `deepcopier:"skip"`
-	lastSys    float64    `deepcopier:"skip"`
-	cloned     bool       `deepcopier:"skip"`
-	ID         string     `json:"id"`
-	StartedAt  time.Time  `json:"started_at"`
-	Name       string     `json:"name"`
-	Status     string     `json:"status"`
-	CPUUsage   float32    `json:"cpu_usage"`
-	MemLimit   int64      `json:"mem_limit"`
-	MemUsage   int64      `json:"mem_usage"`
-	MemPercent float32    `json:"mem_percent"`
+	mu           sync.Mutex `deepcopier:"skip"`
+	done         chan bool  `deepcopier:"skip"`
+	running      bool       `deepcopier:"skip"`
+	conn         *Connector `deepcopier:"skip"`
+	lastCpu      float64    `deepcopier:"skip"`
+	lastSys      float64    `deepcopier:"skip"`
+	cloned       bool       `deepcopier:"skip"`
+	ID           string     `json:"id"`
+	StartedAt    time.Time  `json:"started_at"`
+	Name         string     `json:"name"`
+	Status       string     `json:"status"`
+	CPUUsage     float32    `json:"cpu_usage"`
+	MemLimit     int64      `json:"mem_limit"`
+	MemUsage     int64      `json:"mem_usage"`
+	MemPercent   float32    `json:"mem_percent"`
+	NetRx        int64      `json:"net_rx"`
+	NetTx        int64      `json:"net_tx"`
+	IOBytesRead  int64      `json:"io_bytes_read"`
+	IOBytesWrite int64      `json:"io_bytes_write"`
 }
 
 func (c *Container) Start() {
@@ -57,6 +61,8 @@ func (c *Container) Start() {
 		for s := range stats {
 			c.readMem(s)
 			c.readCPU(s)
+			c.readNet(s)
+			c.readIO(s)
 		}
 	}()
 	c.running = true
@@ -113,6 +119,38 @@ func (c *Container) readCPU(stats *api.Stats) {
 		c.CPUUsage = float32(round((cpudiff / syscpudiff * 100) * ncpus))
 		c.lastCpu = total
 		c.lastSys = system
+	}
+}
+
+func (c *Container) readNet(stats *api.Stats) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if stats != nil {
+		var rx, tx int64
+		for _, network := range stats.Networks {
+			rx += int64(network.RxBytes)
+			tx += int64(network.TxBytes)
+		}
+		c.NetRx, c.NetTx = rx, tx
+	}
+}
+
+func (c *Container) readIO(stats *api.Stats) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if stats != nil {
+		var read, write int64
+		for _, blk := range stats.BlkioStats.IOServiceBytesRecursive {
+			if blk.Op == "Read" {
+				read = int64(blk.Value)
+			}
+			if blk.Op == "Write" {
+				write = int64(blk.Value)
+			}
+		}
+		c.IOBytesRead, c.IOBytesWrite = read, write
 	}
 }
 
