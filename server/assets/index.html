@@ -17,23 +17,37 @@
           <div class="columns is-centered">
             <!-- OS -->
             <div class="column is-three-quarters">
+              <!-- CPU -->
               <label class="label">CPU Usage {{ os_stats['cpu_usage_percent'] | round }}&#37;
                 <vue-simple-progress bar-color="#209CEE" bg-color="#DBDBDB" size="big" v-bind:val="os_stats['cpu_usage_percent']"></vue-simple-progress>
               </label>
+              <!-- RAM -->
               <label class="label">RAM Usage: {{ memUsage | bytesHumanize }} / {{ totalMemory | bytesHumanize }}
                 <vue-simple-progress bar-color="#00D1B2" bg-color="#DBDBDB" size="big" v-bind:val="memUsage" v-bind:max="totalMemory"></vue-simple-progress>
               </label>
+              <div class="columns is-centered">
+                <!-- NET -->
+                <div class="column is-one-quarter">
+                  <label class="label">Tx: {{ os_stats['net']['tx'] | bytesHumanize }}</label>
+                  <label class="label">Rx: {{ os_stats['net']['rx'] | bytesHumanize }}</label>
+                </div>
+                <!-- IO -->
+                <div class="column is-one-quarter">
+                  <label class="label">Read: {{ os_stats['io']['bytes_read'] | bytesHumanize }}</label>
+                  <label class="label">Write: {{ os_stats['io']['bytes_write'] | bytesHumanize }}</label>
+                </div>
+              </div>
             </div>
 
             <!-- Updated at -->
-            <div class="column iis-one-quarter">
+            <div class="column">
               <label class="label">{{ updated_at | momentTime }}</label>
             </div>
           </div>
         </section>
 
         <!-- Containers' stats -->
-        <section class="section container">
+        <section class="section x-session container">
           <label>Running Containers</label>
           <hr>
           <div class="columns is-multiline">

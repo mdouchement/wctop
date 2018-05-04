@@ -1,4 +1,4 @@
-var KiloBytes = 1 << 20;
+var KiloBytes = 1 << 10;
 var MegaBytes = 1 << 20;
 var GigaBytes = 1 << 30;
 
